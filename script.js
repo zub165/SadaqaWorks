@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://208.109.215.53:3000';
 
 // DOM Elements
 // -- Login Elements --
