@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SadaqaWorks | Self-Sufficiency Charity</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    html {
+      scroll-behavior: smooth; /* Enable smooth scrolling */
+    }
+    .hadith-section {
+      background: #f5e6d3;
+      border-left: 4px solid #cdaa7d;
+      padding: 1rem;
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Navigation -->
+  <nav class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-4">
+      <div class="text-2xl font-bold text-green-600">SadaqaWorks</div>
+      <div class="space-x-6 hidden md:flex">
+        <a href="#dashboard" class="hover:text-green-600">Dashboard</a>
+        <a href="#projects" class="hover:text-green-600">Projects</a>
+        <a href="#volunteer" class="hover:text-green-600">Volunteer</a>
+        <a href="#donate" class="hover:text-green-600">Donate</a>
+        <a href="#about" class="hover:text-green-600">About</a>
+        <a href="#settings" class="hover:text-green-600">Settings</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hadith Section -->
+  <section class="hadith-section">
+    <div class="max-w-4xl mx-auto">
+      <blockquote class="italic text-gray-700">
+        "This is better for you than that begging coming as a spot on your face on the Day of Judgment..."
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Login -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <div id="login" class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-bold mb-4">Login</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block mb-1">Select Role:</label>
+          <select id="roleSelect" class="w-full p-2 border rounded">
+            <option>Admin</option>
+            <option>Worker</option>
+            <option>Volunteer</option>
+            <option>Donor</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-1">Password:</label>
+          <input id="passwordInput" type="password" class="w-full p-2 border rounded" placeholder="Enter password">
+        </div>
+      </div>
+      <p id="errorMsg" class="text-red-600 text-sm mt-2 hidden">Incorrect password. Try again.</p>
+      <button id="loginBtn" class="bg-green-600 text-white mt-4 px-6 py-2 rounded hover:bg-green-700">Login</button>
+    </div>
+
+    <!-- Dashboard Placeholder (Target for nav link) -->
+    <section id="dashboard" class="bg-white p-6 rounded-lg shadow-md mt-10">
+      <h2 class="text-2xl font-bold mb-4 text-green-700">Dashboard</h2>
+      <p>Dashboard content will appear here after login.</p>
+    </section>
+
+    <!-- Role-Specific Dashboards (Initially Hidden) -->
+    <section id="adminDashboard" class="hidden mt-10">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-6">Admin Dashboard</h2>
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+          <!-- Total Projects Card -->
+          <div class="bg-blue-100 p-4 rounded-lg shadow">
+            <h3 class="font-semibold text-blue-800">Total Projects</h3>
+            <p id="statTotalProjects" class="text-2xl font-bold text-blue-900">0</p>
+          </div>
+          <!-- Pending Review Card -->
+          <div class="bg-yellow-100 p-4 rounded-lg shadow">
+            <h3 class="font-semibold text-yellow-800">Pending Review</h3>
+            <p id="statPendingProjects" class="text-2xl font-bold text-yellow-900">0</p>
+          </div>
+          <!-- Active Projects Card -->
+          <div class="bg-green-100 p-4 rounded-lg shadow">
+            <h3 class="font-semibold text-green-800">Active Projects</h3>
+            <p id="statActiveProjects" class="text-2xl font-bold text-green-900">0</p>
+          </div>
+          <!-- Completed Projects Card -->
+          <div class="bg-gray-200 p-4 rounded-lg shadow">
+            <h3 class="font-semibold text-gray-800">Completed</h3>
+            <p id="statCompletedProjects" class="text-2xl font-bold text-gray-900">0</p>
+          </div>
+          <!-- Total Donations Card -->
+          <div class="bg-purple-100 p-4 rounded-lg shadow">
+            <h3 class="font-semibold text-purple-800">Donations</h3>
+            <p id="statTotalDonations" class="text-2xl font-bold text-purple-900">N/A</p>
+          </div>
+        </div>
+
+        <!-- World Map Placeholder -->
+        <div class="mt-8 mb-8">
+            <h3 class="text-lg font-semibold mb-2">Project Locations Overview</h3>
+            <div id="mapPlaceholder" class="bg-gray-200 h-64 rounded-lg flex items-center justify-center text-gray-500">
+                [World Map Placeholder - Implementation Pending]
+            </div>
+        </div>
+        <!-- End World Map Placeholder -->
+
+        <h2 class="text-xl font-bold mb-6">Project Management</h2>
+
+        <!-- Project Form -->
+        <form id="projectForm" class="mb-8">
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label class="block mb-1">Project Name:</label>
+              <input type="text" id="projectName" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+              <label class="block mb-1">Project Funds ($):</label>
+              <input type="number" id="projectFunds" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+              <label class="block mb-1">Country:</label>
+              <input type="text" id="projectCountry" class="w-full p-2 border rounded" required>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block mb-1">Project Description:</label>
+            <textarea id="projectDesc" class="w-full p-2 border rounded" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+            Add Project
+          </button>
+        </form>
+
+        <!-- Projects List -->
+        <div id="projectsList" class="space-y-4">
+          <!-- Projects will be loaded here dynamically -->
+        </div>
+      </div>
+    </section>
+    <section id="workerDashboard" class="hidden mt-10">
+        <h2 class="text-2xl font-bold mb-4">Worker Dashboard</h2>
+        <p>Worker-specific content goes here.</p>
+    </section>
+    <section id="volunteerDashboard" class="hidden mt-10 bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-6">Volunteer Hub</h2>
+
+        <!-- Volunteer Registration Form -->
+        <div class="mb-8 border-b pb-6">
+            <h3 class="text-xl font-semibold mb-4">Register Your Interest</h3>
+            <form id="volunteerForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="volunteerName" class="block mb-1 font-medium">Full Name:</label>
+                        <input type="text" id="volunteerName" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label for="volunteerEmail" class="block mb-1 font-medium">Email:</label>
+                        <input type="email" id="volunteerEmail" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label for="volunteerPhone" class="block mb-1 font-medium">Phone (Optional):</label>
+                        <input type="tel" id="volunteerPhone" class="w-full p-2 border rounded">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1 font-medium">Areas of Expertise / Interest:</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        <label class="flex items-center"><input type="checkbox" name="specialty" value="Construction" class="mr-2"> Construction</label>
+                        <label class="flex items-center"><input type="checkbox" name="specialty" value="Teaching" class="mr-2"> Teaching/Training</label>
+                        <label class="flex items-center"><input type="checkbox" name="specialty" value="Healthcare" class="mr-2"> Healthcare</label>
+                        <label class="flex items-center"><input type="checkbox" name="specialty" value="Admin" class="mr-2"> Administration</label>
+                        <label class="flex items-center"><input type="checkbox" name="specialty" value="Logistics" class="mr-2"> Logistics/Transport</label>
+                        <label class="flex items-center"><input type="checkbox" name="specialty" value="Fundraising" class="mr-2"> Fundraising</label>
+                        <label class="flex items-center"><input type="checkbox" name="specialty" value="IT" class="mr-2"> IT Support</label>
+                        <label class="flex items-center"><input type="checkbox" name="specialty" value="Other" class="mr-2"> Other (Specify Below)</label>
+                    </div>
+                </div>
+                 <div class="mb-4">
+                    <label for="volunteerAvailability" class="block mb-1 font-medium">Availability & Other Skills:</label>
+                    <textarea id="volunteerAvailability" class="w-full p-2 border rounded" rows="3" placeholder="e.g., Weekends, specific skills like graphic design, languages spoken..."></textarea>
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                    Register
+                </button>
+            </form>
+        </div>
+
+        <!-- List of Registered Volunteers (Initially for Admin/Volunteer view) -->
+        <div>
+            <h3 class="text-xl font-semibold mb-4">Registered Volunteers</h3>
+            <div id="volunteersList" class="space-y-3">
+                <!-- Volunteer info will be loaded here -->
+                <p class="text-gray-500">Loading volunteers...</p>
+            </div>
+        </div>
+    </section>
+    <section id="donorDashboard" class="hidden mt-10 bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Donor Dashboard</h2>
+        <p>Donor-specific content goes here.</p>
+        <!-- Placeholder for donate section target - REMOVED -->
+        
+    </section>
+
+    <!-- Projects Placeholder (Target for nav link) -->
+    <section id="projects" class="bg-white p-6 rounded-lg shadow-md mt-10">
+        <h2 class="text-2xl font-bold mb-4 text-green-700">Projects</h2>
+        <p>Projects are managed within the Admin dashboard after login.</p>
+    </section>
+
+  </main>
+
+  <!-- Donate Section (Target for nav link) -->
+  <section id="donate" class="bg-white p-6 rounded-lg shadow-md mt-10">
+      <h2 class="text-2xl font-bold mb-4 text-green-700">Donate</h2>
+      <p class="mb-4 text-gray-700">Support our mission to empower individuals through self-sufficiency. Your contribution, big or small, makes a real difference in helping people build dignified livelihoods.</p>
+      
+      <!-- PayPal Donation Button -->
+      <form action="https://www.paypal.com/donate" method="post" target="_top">
+        <input type="hidden" name="business" value="WRZ8DYSUSX6PU" />
+        <input type="hidden" name="no_recurring" value="0" />
+        <input type="hidden" name="item_name" value="Inspired by the Prophet's (pbuh) teachings, we help people work with dignity and turn charity into self-sufficiency." />
+        <input type="hidden" name="currency_code" value="USD" />
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+        <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+      </form>
+      <!-- End PayPal Donation Button -->
+      
+      <p class="mt-4 text-sm text-gray-600">Alternatively, contact us for other donation methods.</p>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="bg-white p-6 rounded-lg shadow-md mt-10">
+    <h2 class="text-2xl font-bold mb-4 text-green-700">Why SadaqaWorks?</h2>
+    <p class="mb-4 text-gray-700">
+      Inspired by the Prophet Muhammad's (peace be upon him) approach to empowering others through work and dignity,
+      our mission is to transform charity into self-sufficiency.
+    </p>
+    <blockquote class="italic text-gray-600 border-l-4 border-green-600 pl-4">
+      "A man from the Ansaar came to the Prophet and begged from him... (Full Hadith below)"
+    </blockquote>
+    <details class="mt-4 text-sm text-gray-600">
+      <summary class="cursor-pointer text-green-600 font-semibold">Read Full Hadith</summary>
+      <p class="mt-2">
+        [Insert Full Hadith Text Here as provided earlier]
+      </p>
+    </details>
+  </section>
+
+  <!-- Settings Section -->
+  <section id="settings" class="bg-white p-6 rounded-lg shadow-md mt-10">
+    <h3 class="text-xl font-bold mb-3 text-green-700">Inspiration Behind the Platform</h3>
+    <p class="text-gray-700 mb-3">
+      Our approach is rooted in prophetic wisdom that highlights empowerment over dependency.
+    </p>
+    <blockquote class="text-sm italic text-gray-600 border-l-4 border-yellow-500 pl-4">
+      "This is better for you than that begging coming as a spot on your face on the Day of Judgment..."
+    </blockquote>
+    <p class="mt-3 text-sm text-gray-600">
+      This Hadith reminds us that work, no matter how simple, brings dignity and reward. SadaqaWorks was created to bring this same opportunity to every hand once stretched out in need.
+    </p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
