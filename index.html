@@ -69,8 +69,8 @@
       <p id="errorMsg" class="text-red-600 text-sm mt-2 hidden">Incorrect password. Try again.</p>
       <div class="flex flex-wrap items-center gap-3 mt-4">
         <button id="loginBtn" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Login</button>
-        <!-- Self-registration disabled: Admin creates accounts -->
-        <button id="registerBtn" type="button" class="hidden bg-white border border-green-600 text-green-700 px-6 py-2 rounded hover:bg-green-50">Create Account</button>
+        <!-- Self-registration allowed for Donor + Contractor -->
+        <button id="registerBtn" type="button" class="bg-white border border-green-600 text-green-700 px-6 py-2 rounded hover:bg-green-50">Create Account</button>
         <button id="forgotBtn" type="button" class="text-sm text-gray-600 underline hover:text-gray-900">Forgot password?</button>
       </div>
     </div>
@@ -86,10 +86,8 @@
           <div>
             <label class="block mb-1 text-sm font-medium">Role</label>
             <select id="registerRole" class="w-full p-2 border rounded">
-              <option>Admin</option>
-              <option>Worker</option>
-              <option>Volunteer</option>
               <option>Donor</option>
+              <option>Contractor</option>
             </select>
           </div>
           <div>
