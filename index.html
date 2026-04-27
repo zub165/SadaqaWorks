@@ -58,12 +58,93 @@
           </select>
         </div>
         <div>
+          <label class="block mb-1">Email:</label>
+          <input id="emailInput" type="email" class="w-full p-2 border rounded" placeholder="you@example.com">
+        </div>
+        <div>
           <label class="block mb-1">Password:</label>
           <input id="passwordInput" type="password" class="w-full p-2 border rounded" placeholder="Enter password">
         </div>
       </div>
       <p id="errorMsg" class="text-red-600 text-sm mt-2 hidden">Incorrect password. Try again.</p>
-      <button id="loginBtn" class="bg-green-600 text-white mt-4 px-6 py-2 rounded hover:bg-green-700">Login</button>
+      <div class="flex flex-wrap items-center gap-3 mt-4">
+        <button id="loginBtn" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Login</button>
+        <!-- Self-registration disabled: Admin creates accounts -->
+        <button id="registerBtn" type="button" class="hidden bg-white border border-green-600 text-green-700 px-6 py-2 rounded hover:bg-green-50">Create Account</button>
+        <button id="forgotBtn" type="button" class="text-sm text-gray-600 underline hover:text-gray-900">Forgot password?</button>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-40 p-4">
+      <div class="bg-white w-full max-w-lg rounded-lg shadow-lg p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-lg font-bold">Create Account</h3>
+          <button id="registerCloseBtn" class="text-gray-500 hover:text-gray-800">✕</button>
+        </div>
+        <form id="registerForm" class="mt-4 space-y-3">
+          <div>
+            <label class="block mb-1 text-sm font-medium">Role</label>
+            <select id="registerRole" class="w-full p-2 border rounded">
+              <option>Admin</option>
+              <option>Worker</option>
+              <option>Volunteer</option>
+              <option>Donor</option>
+            </select>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">Full name</label>
+            <input id="registerName" class="w-full p-2 border rounded" placeholder="Full name" required>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">Email</label>
+            <input id="registerEmail" type="email" class="w-full p-2 border rounded" placeholder="you@example.com" required>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">Password</label>
+            <input id="registerPassword" type="password" class="w-full p-2 border rounded" placeholder="Minimum 6 characters" required>
+          </div>
+          <p id="registerMsg" class="text-sm text-red-600 hidden"></p>
+          <div class="flex items-center gap-3 pt-2">
+            <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700">Create</button>
+            <button id="registerCancelBtn" type="button" class="bg-white border px-5 py-2 rounded hover:bg-gray-50">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div id="resetModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-40 p-4">
+      <div class="bg-white w-full max-w-lg rounded-lg shadow-lg p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-lg font-bold">Reset Password</h3>
+          <button id="resetCloseBtn" class="text-gray-500 hover:text-gray-800">✕</button>
+        </div>
+        <form id="resetRequestForm" class="mt-4 space-y-3">
+          <div>
+            <label class="block mb-1 text-sm font-medium">Email</label>
+            <input id="resetEmail" type="email" class="w-full p-2 border rounded" placeholder="you@example.com" required>
+          </div>
+          <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">Send reset token</button>
+          <p class="text-xs text-gray-600">This server returns a reset token directly (email not configured yet).</p>
+          <div id="resetTokenBox" class="hidden bg-gray-50 border rounded p-3 text-sm">
+            <div class="font-semibold">Reset token</div>
+            <div id="resetTokenValue" class="font-mono break-all"></div>
+          </div>
+        </form>
+        <form id="resetConfirmForm" class="mt-4 space-y-3">
+          <div>
+            <label class="block mb-1 text-sm font-medium">Reset token</label>
+            <input id="resetTokenInput" class="w-full p-2 border rounded" placeholder="Paste reset token" required>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">New password</label>
+            <input id="resetNewPassword" type="password" class="w-full p-2 border rounded" placeholder="Minimum 6 characters" required>
+          </div>
+          <p id="resetMsg" class="text-sm text-red-600 hidden"></p>
+          <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700">Confirm reset</button>
+        </form>
+      </div>
     </div>
 
     <!-- Dashboard Placeholder (Target for nav link) -->
@@ -163,6 +244,45 @@
             <!-- Donations will be loaded here dynamically -->
             <p class="text-gray-500">Loading donations...</p>
           </div>
+        </div>
+
+        <!-- User Management (Admin only) -->
+        <div class="mt-10 border-t pt-6">
+          <h3 class="text-xl font-semibold mb-4">User Management</h3>
+          <p class="text-sm text-gray-600 mb-3">Only Admin can create accounts for workers/contractors/donors/donor receivers.</p>
+          <form id="adminCreateUserForm" class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1">Role</label>
+              <select id="adminUserRole" class="w-full p-2 border rounded">
+                <option>Worker</option>
+                <option>Volunteer</option>
+                <option>Contractor</option>
+                <option>Donor</option>
+                <option>Donor Receiver</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-1">Full name</label>
+              <input id="adminUserName" class="w-full p-2 border rounded" placeholder="Full name" required>
+            </div>
+            <div>
+              <label class="block mb-1">Email</label>
+              <input id="adminUserEmail" type="email" class="w-full p-2 border rounded" placeholder="user@example.com" required>
+            </div>
+            <div>
+              <label class="block mb-1">Temp password (optional)</label>
+              <input id="adminUserTempPassword" class="w-full p-2 border rounded" placeholder="Leave blank to auto-generate">
+            </div>
+            <div class="md:col-span-2">
+              <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Create User</button>
+              <p id="adminCreateUserMsg" class="text-sm text-red-600 mt-2 hidden"></p>
+              <div id="adminCreatedCreds" class="hidden mt-3 bg-gray-50 border rounded p-3 text-sm">
+                <div class="font-semibold">Credentials created</div>
+                <div><span class="font-medium">Email:</span> <span id="adminCreatedEmail" class="font-mono"></span></div>
+                <div><span class="font-medium">Temp password:</span> <span id="adminCreatedPassword" class="font-mono"></span></div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </section>
@@ -328,6 +448,47 @@
       <h2 class="text-2xl font-bold mb-4 text-green-700">Donate</h2>
       <p class="mb-4 text-gray-700">Support our mission to empower individuals through self-sufficiency. Your contribution, big or small, makes a real difference in helping people build dignified livelihoods.</p>
       
+      <!-- Donation status (return from PayPal/Stripe) -->
+      <div id="donationStatusBox" class="hidden mb-6 border rounded p-4">
+        <div id="donationStatusTitle" class="font-semibold"></div>
+        <div id="donationStatusText" class="text-sm text-gray-700 mt-1"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- PayPal hosted donation -->
+        <div class="border rounded-lg p-4">
+          <h3 class="text-lg font-semibold">PayPal (Hosted)</h3>
+          <p class="text-sm text-gray-600 mt-1">Fast worldwide donations via PayPal hosted checkout.</p>
+          <div class="mt-4 flex flex-col gap-3">
+            <a id="paypalDonateLink" class="inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" href="https://www.paypal.com/donate/?hosted_button_id=VKR4HREY38HJU" target="_blank" rel="noopener">Donate with PayPal</a>
+            <div class="text-xs text-gray-600">
+              In PayPal settings, enable <span class="font-semibold">“Take donors back to your website”</span> and set the return URL to:
+              <div class="font-mono mt-1 break-all">https://yourdomain.com/#donation-success</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR code -->
+        <div class="border rounded-lg p-4">
+          <h3 class="text-lg font-semibold">Scan QR to Donate</h3>
+          <p class="text-sm text-gray-600 mt-1">Scan this QR code to open the PayPal donate page.</p>
+          <div class="mt-4 flex items-center justify-center">
+            <img id="paypalQrImg" alt="PayPal donation QR" class="w-56 h-56 border rounded" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fwww.paypal.com%2Fdonate%2F%3Fhosted_button_id%3DVKR4HREY38HJU">
+          </div>
+          <p class="text-xs text-gray-500 mt-3">If QR is blocked by network policy, use the PayPal button instead.</p>
+        </div>
+
+        <!-- Stripe (coming soon until keys configured) -->
+        <div class="border rounded-lg p-4">
+          <h3 class="text-lg font-semibold">Card / Apple Pay / Google Pay (Stripe)</h3>
+          <p class="text-sm text-gray-600 mt-1">This will open a secure Stripe checkout page (requires Stripe keys configured on server).</p>
+          <div class="mt-4">
+            <button id="stripeDonateBtn" type="button" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Donate with Card</button>
+            <p id="stripeDonateMsg" class="text-xs text-red-600 mt-2 hidden"></p>
+          </div>
+        </div>
+      </div>
+      
       <!-- PayPal Donation Button -->
       <form action="https://www.paypal.com/donate" method="post" target="_top">
         <input type="hidden" name="business" value="WRZ8DYSUSX6PU" />
@@ -374,6 +535,7 @@
     </p>
   </section>
 
-  <script src="script.js"></script>
+  <!-- Use absolute path so deep links (e.g. /myprojects) still load JS -->
+  <script src="/script.js"></script>
 </body>
 </html>
