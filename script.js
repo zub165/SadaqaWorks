@@ -1,6 +1,7 @@
 // API Configuration (same-origin so it works behind reverse proxies and deep links)
 const API_BASE_URL = window.location.origin;
 const PAYPAL_DONATE_URL = 'https://www.paypal.com/donate/?hosted_button_id=VKR4HREY38HJU';
+const STRIPE_DONATE_URL = 'https://donate.stripe.com/6oU28t1ND16I2V063H7kc04';
 
 // DOM Elements
 // -- Login Elements --
@@ -42,8 +43,8 @@ const donationStatusTitle = document.getElementById('donationStatusTitle');
 const donationStatusText = document.getElementById('donationStatusText');
 const paypalDonateLink = document.getElementById('paypalDonateLink');
 const paypalQrImg = document.getElementById('paypalQrImg');
-const stripeDonateBtn = document.getElementById('stripeDonateBtn');
-const stripeDonateMsg = document.getElementById('stripeDonateMsg');
+const stripeDonateLink = document.getElementById('stripeDonateLink');
+const stripeQrImg = document.getElementById('stripeQrImg');
 
 // -- Admin user provisioning elements --
 const adminCreateUserForm = document.getElementById('adminCreateUserForm');
@@ -104,7 +105,7 @@ if (registerForm) registerForm.addEventListener('submit', handleRegister);
 if (resetRequestForm) resetRequestForm.addEventListener('submit', handlePasswordResetRequest);
 if (resetConfirmForm) resetConfirmForm.addEventListener('submit', handlePasswordResetConfirm);
 if (adminCreateUserForm) adminCreateUserForm.addEventListener('submit', handleAdminCreateUser);
-if (stripeDonateBtn) stripeDonateBtn.addEventListener('click', handleStripeDonate);
+// Stripe hosted link does not need JS handler
 
 // -- Project Form Listener --
 if (projectForm) {
@@ -172,34 +173,6 @@ function handleDonationReturn() {
         }
     } catch (_) {
         // ignore
-    }
-}
-
-async function handleStripeDonate() {
-    if (stripeDonateMsg) stripeDonateMsg.classList.add('hidden');
-    try {
-        const amount = prompt('Enter donation amount (USD):', '10.00');
-        if (!amount) return;
-        const resp = await fetch(`${API_BASE_URL}/payments/checkout`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ provider: 'stripe', amount, currency: 'USD' })
-        });
-        const data = await resp.json().catch(() => ({}));
-        if (!resp.ok) {
-            const msg = data?.message || 'Stripe checkout failed';
-            if (stripeDonateMsg) {
-                stripeDonateMsg.textContent = msg;
-                stripeDonateMsg.classList.remove('hidden');
-            }
-            return;
-        }
-        if (data.redirectUrl) window.location.href = data.redirectUrl;
-    } catch (e) {
-        if (stripeDonateMsg) {
-            stripeDonateMsg.textContent = 'Stripe checkout failed.';
-            stripeDonateMsg.classList.remove('hidden');
-        }
     }
 }
 
@@ -893,5 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // No initial data load needed here, it's triggered by admin login.
     if (paypalDonateLink) paypalDonateLink.href = PAYPAL_DONATE_URL;
     if (paypalQrImg) paypalQrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(PAYPAL_DONATE_URL)}`;
+    if (stripeDonateLink) stripeDonateLink.href = STRIPE_DONATE_URL;
+    if (stripeQrImg) stripeQrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(STRIPE_DONATE_URL)}`;
     handleDonationReturn();
 }); 

@@ -478,13 +478,16 @@
           <p class="text-xs text-gray-500 mt-3">If QR is blocked by network policy, use the PayPal button instead.</p>
         </div>
 
-        <!-- Stripe (coming soon until keys configured) -->
+        <!-- Stripe hosted donation -->
         <div class="border rounded-lg p-4">
           <h3 class="text-lg font-semibold">Card / Apple Pay / Google Pay (Stripe)</h3>
-          <p class="text-sm text-gray-600 mt-1">This will open a secure Stripe checkout page (requires Stripe keys configured on server).</p>
-          <div class="mt-4">
-            <button id="stripeDonateBtn" type="button" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Donate with Card</button>
-            <p id="stripeDonateMsg" class="text-xs text-red-600 mt-2 hidden"></p>
+          <p class="text-sm text-gray-600 mt-1">Secure worldwide card donation via Stripe hosted checkout.</p>
+          <div class="mt-4 flex flex-col gap-3">
+            <a id="stripeDonateLink" class="inline-flex items-center justify-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" href="https://donate.stripe.com/6oU28t1ND16I2V063H7kc04" target="_blank" rel="noopener">Donate with Stripe</a>
+            <div class="text-sm text-gray-600">Scan QR to open the Stripe donate page:</div>
+            <div class="flex items-center justify-center">
+              <img id="stripeQrImg" alt="Stripe donation QR" class="w-56 h-56 border rounded" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fdonate.stripe.com%2F6oU28t1ND16I2V063H7kc04">
+            </div>
           </div>
         </div>
       </div>
