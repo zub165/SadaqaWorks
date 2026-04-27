@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SadaqaWorks | Self-Sufficiency Charity</title>
+  <title>SadaqaWorks | Donate & Support Charity</title>
+  <meta name="description" content="Support verified charitable causes with SadaqaWorks. Donate once or monthly to empower people through dignified work." />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
     html {
@@ -15,24 +16,67 @@
       padding: 1rem;
       margin: 2rem 0;
     }
+    /* Slightly nicer scrollbars for modern feel */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: rgba(107,114,128,.5); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(107,114,128,.75); }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800">
 
   <!-- Navigation -->
-  <nav class="bg-white shadow-md">
-    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-4">
-      <div class="text-2xl font-bold text-green-600">SadaqaWorks</div>
-      <div class="space-x-6 hidden md:flex">
-        <a href="#dashboard" class="hover:text-green-600">Dashboard</a>
-        <a href="#projects" class="hover:text-green-600">Projects</a>
-        <a href="#volunteer" class="hover:text-green-600">Volunteer</a>
-        <a href="#donate" class="hover:text-green-600">Donate</a>
-        <a href="#about" class="hover:text-green-600">About</a>
-        <a href="#settings" class="hover:text-green-600">Settings</a>
+  <nav class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-green-600 text-white flex items-center justify-center font-extrabold">S</div>
+        <div class="leading-tight">
+          <div class="text-lg font-extrabold text-gray-900">SadaqaWorks</div>
+          <div class="text-xs text-gray-500">Empowerment • Dignity • Work</div>
+        </div>
+      </div>
+
+      <div class="hidden md:flex items-center gap-5 text-sm">
+        <a href="#dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+        <a href="#projects" class="text-gray-600 hover:text-gray-900">Projects</a>
+        <a href="#volunteer" class="text-gray-600 hover:text-gray-900">Volunteer</a>
+        <a href="#donate" class="text-gray-600 hover:text-gray-900">Donate</a>
+        <a href="#about" class="text-gray-600 hover:text-gray-900">About</a>
+        <a href="#settings" class="text-gray-600 hover:text-gray-900">Settings</a>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="mobileMenuBtn" type="button" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 hover:bg-gray-50" aria-label="Open menu">
+          <span class="text-lg">≡</span>
+        </button>
+        <button id="themeToggleBtn" type="button" class="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 text-sm">
+          <span class="text-gray-700">Theme</span>
+        </button>
+        <button id="logoutBtn" type="button" class="hidden items-center gap-2 px-3 py-2 rounded-lg bg-gray-900 text-white hover:bg-black text-sm">
+          Logout
+        </button>
       </div>
     </div>
   </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="hidden md:hidden border-b bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-2 text-sm">
+      <a href="#dashboard" class="px-3 py-2 rounded-lg hover:bg-gray-50">Dashboard</a>
+      <a href="#projects" class="px-3 py-2 rounded-lg hover:bg-gray-50">Projects</a>
+      <a href="#volunteer" class="px-3 py-2 rounded-lg hover:bg-gray-50">Volunteer</a>
+      <a href="#donate" class="px-3 py-2 rounded-lg hover:bg-gray-50">Donate</a>
+      <a href="#about" class="px-3 py-2 rounded-lg hover:bg-gray-50">About</a>
+      <a href="#settings" class="px-3 py-2 rounded-lg hover:bg-gray-50">Settings</a>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toastContainer" class="fixed z-50 top-4 right-4 space-y-3 w-[min(92vw,420px)]"></div>
+
+  <!-- Sticky donate CTA -->
+  <button id="stickyDonateBtn" type="button" class="fixed z-40 bottom-5 right-5 shadow-lg bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-3 rounded-xl">
+    Donate
+  </button>
 
   <!-- Hadith Section -->
   <section class="hadith-section">
@@ -45,12 +89,175 @@
 
   <!-- Login -->
   <main class="max-w-6xl mx-auto px-4 py-6">
-    <div id="login" class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-xl font-bold mb-4">Login</h2>
+    <!-- Hero -->
+    <section id="home" class="mb-6">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            <h1 class="text-2xl md:text-4xl font-extrabold text-gray-900">Support SadaqaWorks</h1>
+            <p class="mt-2 text-gray-600 max-w-2xl">Your donation helps fund real work opportunities and verified projects—so people can earn with dignity and become self‑sufficient.</p>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <a id="donateOnceLink" class="bg-green-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 font-semibold inline-flex items-center justify-center">Donate Once</a>
+              <a id="monthlySupportLink" class="bg-white border border-gray-200 px-5 py-3 rounded-xl hover:bg-gray-50 font-semibold text-gray-900 inline-flex items-center justify-center">Monthly Support</a>
+              <a id="whatsAppDonateLink" class="inline-flex items-center justify-center bg-white border border-green-200 text-green-700 px-5 py-3 rounded-xl hover:bg-green-50 font-semibold" href="https://wa.me/?text=Support%20SadaqaWorks%20by%20donating:%20YOUR_LINK" target="_blank" rel="noopener">Donate via WhatsApp</a>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-50 text-green-700 text-xs font-semibold border border-green-100">Role-based dashboards</span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-100">Project tracking</span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-semibold border border-purple-100">Donation history</span>
+            </div>
+          </div>
+          <div class="md:w-72">
+            <div class="rounded-xl bg-gradient-to-br from-green-600 to-emerald-500 text-white p-4">
+              <div class="text-sm opacity-90">Urgency</div>
+              <div class="mt-2 font-bold text-lg">Help 50 families this month</div>
+              <div class="mt-3 text-xs opacity-90">Choose a one‑time gift or start monthly support. Every contribution strengthens real livelihoods.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact stats -->
+    <section id="impact" class="mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+          <div class="text-sm text-gray-500">Families supported</div>
+          <div class="text-3xl font-extrabold text-gray-900 mt-1">50+</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+          <div class="text-sm text-gray-500">Active projects</div>
+          <div class="text-3xl font-extrabold text-gray-900 mt-1">12</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+          <div class="text-sm text-gray-500">Donation transparency</div>
+          <div class="text-3xl font-extrabold text-gray-900 mt-1">100%</div>
+          <div class="text-xs text-gray-500 mt-2">Clear breakdown + visible project progress.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured projects (public) -->
+    <section id="projectsPublic" class="mb-6">
+      <div class="flex items-end justify-between gap-4 mb-3">
+        <div>
+          <h2 class="text-xl md:text-2xl font-extrabold text-gray-900">Projects</h2>
+          <p class="text-sm text-gray-600 mt-1">A snapshot of what your donations fund.</p>
+        </div>
+        <a href="#donate" class="text-sm font-semibold text-green-700 hover:text-green-800">Donate now →</a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <img loading="lazy" class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?auto=format&fit=crop&w=900&q=60" alt="Water project">
+          <div class="p-5">
+            <div class="font-extrabold text-gray-900">Water access</div>
+            <div class="text-sm text-gray-600 mt-1">Clean water projects that reduce disease and restore dignity.</div>
+            <div class="mt-3">
+              <div class="flex items-center justify-between text-xs text-gray-600">
+                <span>Progress</span><span>68%</span>
+              </div>
+              <div class="h-2 bg-gray-100 rounded-full mt-1">
+                <div class="h-2 bg-green-600 rounded-full" style="width: 68%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <img loading="lazy" class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1459183885421-5cc683b8dbba?auto=format&fit=crop&w=900&q=60" alt="Training">
+          <div class="p-5">
+            <div class="font-extrabold text-gray-900">Skills training</div>
+            <div class="text-sm text-gray-600 mt-1">Job‑ready skills so families can earn consistently.</div>
+            <div class="mt-3">
+              <div class="flex items-center justify-between text-xs text-gray-600">
+                <span>Progress</span><span>41%</span>
+              </div>
+              <div class="h-2 bg-gray-100 rounded-full mt-1">
+                <div class="h-2 bg-green-600 rounded-full" style="width: 41%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <img loading="lazy" class="w-full h-40 object-cover" src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=60" alt="Small business">
+          <div class="p-5">
+            <div class="font-extrabold text-gray-900">Micro‑enterprise</div>
+            <div class="text-sm text-gray-600 mt-1">Tools and seed funding to launch small businesses.</div>
+            <div class="mt-3">
+              <div class="flex items-center justify-between text-xs text-gray-600">
+                <span>Progress</span><span>85%</span>
+              </div>
+              <div class="h-2 bg-gray-100 rounded-full mt-1">
+                <div class="h-2 bg-green-600 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="mb-6">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <h2 class="text-xl md:text-2xl font-extrabold text-gray-900">Testimonials</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div class="border rounded-xl p-4 bg-gray-50">
+            <div class="text-sm text-gray-700">“I donated once and loved seeing the project progress. It feels transparent and real.”</div>
+            <div class="text-xs text-gray-500 mt-2">— Supporter</div>
+          </div>
+          <div class="border rounded-xl p-4 bg-gray-50">
+            <div class="text-sm text-gray-700">“The focus on dignity and work is exactly what we need.”</div>
+            <div class="text-xs text-gray-500 mt-2">— Volunteer</div>
+          </div>
+          <div class="border rounded-xl p-4 bg-gray-50">
+            <div class="text-sm text-gray-700">“Clear breakdown of where money goes builds trust.”</div>
+            <div class="text-xs text-gray-500 mt-2">— Donor</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transparency / Trust -->
+    <section id="transparency" class="mb-6">
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div class="flex-1">
+            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900">Where your money goes</h2>
+            <p class="text-sm text-gray-600 mt-2">We prioritize verified causes and measurable progress. Here’s a clear breakdown (example).</p>
+            <div class="mt-4 space-y-3">
+              <div>
+                <div class="flex justify-between text-xs text-gray-600"><span>Direct project costs</span><span>85%</span></div>
+                <div class="h-2 bg-gray-100 rounded-full mt-1"><div class="h-2 bg-green-600 rounded-full" style="width: 85%"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs text-gray-600"><span>Operations</span><span>10%</span></div>
+                <div class="h-2 bg-gray-100 rounded-full mt-1"><div class="h-2 bg-blue-600 rounded-full" style="width: 10%"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs text-gray-600"><span>Processing fees</span><span>5%</span></div>
+                <div class="h-2 bg-gray-100 rounded-full mt-1"><div class="h-2 bg-gray-700 rounded-full" style="width: 5%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="md:w-80">
+            <div class="border rounded-2xl p-4 bg-gray-50">
+              <div class="font-extrabold text-gray-900">Verified causes</div>
+              <div class="text-sm text-gray-600 mt-2">Projects are reviewed before becoming “Active”. Progress updates and funding milestones are tracked.</div>
+              <div class="mt-4 text-xs text-gray-500">Want to verify a project? Contact us below.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="login" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="text-xl font-extrabold text-gray-900">Login</h2>
+        <div id="apiStatusPill" class="hidden text-xs px-3 py-1 rounded-full border"></div>
+      </div>
       <div class="grid md:grid-cols-2 gap-4">
         <div>
           <label class="block mb-1">Select Role:</label>
-          <select id="roleSelect" class="w-full p-2 border rounded">
+          <select id="roleSelect" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200">
             <option>Admin</option>
             <option>Worker</option>
             <option>Volunteer</option>
@@ -59,19 +266,25 @@
         </div>
         <div>
           <label class="block mb-1">Email:</label>
-          <input id="emailInput" type="email" class="w-full p-2 border rounded" placeholder="you@example.com">
+          <input id="emailInput" type="email" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200" placeholder="you@example.com">
         </div>
         <div>
           <label class="block mb-1">Password:</label>
-          <input id="passwordInput" type="password" class="w-full p-2 border rounded" placeholder="Enter password">
+          <input id="passwordInput" type="password" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200" placeholder="Enter password">
         </div>
       </div>
       <p id="errorMsg" class="text-red-600 text-sm mt-2 hidden">Incorrect password. Try again.</p>
       <div class="flex flex-wrap items-center gap-3 mt-4">
-        <button id="loginBtn" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Login</button>
+        <button id="loginBtn" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-200 inline-flex items-center gap-2">
+          <span id="loginBtnText">Login</span>
+          <span id="loginBtnSpinner" class="hidden w-4 h-4 border-2 border-white/60 border-t-white rounded-full animate-spin"></span>
+        </button>
         <!-- Self-registration allowed for Donor + Contractor -->
-        <button id="registerBtn" type="button" class="bg-white border border-green-600 text-green-700 px-6 py-2 rounded hover:bg-green-50">Create Account</button>
+        <button id="registerBtn" type="button" class="bg-white border border-green-600 text-green-700 px-6 py-2 rounded-lg hover:bg-green-50">Create Account</button>
         <button id="forgotBtn" type="button" class="text-sm text-gray-600 underline hover:text-gray-900">Forgot password?</button>
+      </div>
+      <div class="mt-4 text-xs text-gray-500">
+        Tip: use the same email each time; your session token is saved in your browser.
       </div>
     </div>
 
@@ -220,6 +433,30 @@
             Add Project
           </button>
         </form>
+
+        <!-- Project Tools -->
+        <div class="mb-6 bg-gray-50 border rounded-lg p-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+            <div>
+              <label class="block mb-1 text-sm font-medium">Search</label>
+              <input id="projectSearchInput" class="w-full p-2 border rounded-lg" placeholder="Search by name, country, status...">
+            </div>
+            <div>
+              <label class="block mb-1 text-sm font-medium">Status</label>
+              <select id="projectStatusFilter" class="w-full p-2 border rounded-lg">
+                <option value="">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Active">Active</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+            <div class="flex gap-2">
+              <button id="projectRefreshBtn" type="button" class="px-4 py-2 rounded-lg border bg-white hover:bg-gray-50">Refresh</button>
+              <button id="projectExportBtn" type="button" class="px-4 py-2 rounded-lg bg-gray-900 text-white hover:bg-black">Export CSV</button>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 mt-2">Search and filters apply instantly to the list below.</p>
+        </div>
 
         <!-- Projects List -->
         <div id="projectsList" class="space-y-4">
@@ -416,6 +653,13 @@
                             <option value="Cash">Cash</option>
                         </select>
                     </div>
+                    <div>
+                        <label for="donationProjectId" class="block mb-1 font-medium">Donate to Project (Optional):</label>
+                        <select id="donationProjectId" class="w-full p-2 border rounded">
+                          <option value="">No specific project</option>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1">This list loads after login.</p>
+                    </div>
                 </div>
                 <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
                     Record Donation
@@ -432,6 +676,30 @@
             </div>
         </div>
     </section>
+
+    <!-- Assign Project Modal -->
+    <div id="assignModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-40 p-4">
+      <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-lg font-extrabold">Assign project</h3>
+            <p class="text-sm text-gray-600 mt-1">Choose a worker to assign this project to.</p>
+          </div>
+          <button id="assignCloseBtn" class="text-gray-500 hover:text-gray-800">✕</button>
+        </div>
+        <div class="mt-4 space-y-3">
+          <div>
+            <label class="block mb-1 text-sm font-medium">Worker</label>
+            <select id="assignWorkerSelect" class="w-full p-2 border rounded-lg"></select>
+          </div>
+          <p id="assignMsg" class="text-sm text-red-600 hidden"></p>
+          <div class="flex items-center gap-3 pt-2">
+            <button id="assignConfirmBtn" type="button" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">Assign</button>
+            <button id="assignCancelBtn" type="button" class="bg-white border px-5 py-2 rounded-lg hover:bg-gray-50">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Projects Placeholder (Target for nav link) -->
     <section id="projects" class="bg-white p-6 rounded-lg shadow-md mt-10">
@@ -451,11 +719,44 @@
   <section id="donate" class="bg-white p-6 rounded-lg shadow-md mt-10">
       <h2 class="text-2xl font-bold mb-4 text-green-700">Donate</h2>
       <p class="mb-4 text-gray-700">Support our mission to empower individuals through self-sufficiency. Your contribution, big or small, makes a real difference in helping people build dignified livelihoods.</p>
+
+      <div class="mb-5 bg-green-50 border border-green-100 rounded-xl p-4">
+        <div class="font-semibold text-green-900">Help 50 families this month</div>
+        <div class="text-sm text-green-800 mt-1">Choose a one‑time gift or monthly support. Your donation funds verified projects and skill-building work.</div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button class="donatePresetBtn px-3 py-2 rounded-lg bg-white border hover:bg-green-50" data-amount="10">$10</button>
+          <button class="donatePresetBtn px-3 py-2 rounded-lg bg-white border hover:bg-green-50" data-amount="25">$25</button>
+          <button class="donatePresetBtn px-3 py-2 rounded-lg bg-white border hover:bg-green-50" data-amount="50">$50</button>
+          <button class="donatePresetBtn px-3 py-2 rounded-lg bg-white border hover:bg-green-50" data-amount="100">$100</button>
+        </div>
+      </div>
       
       <!-- Donation status (return from PayPal/Stripe) -->
       <div id="donationStatusBox" class="hidden mb-6 border rounded p-4">
         <div id="donationStatusTitle" class="font-semibold"></div>
         <div id="donationStatusText" class="text-sm text-gray-700 mt-1"></div>
+      </div>
+
+      <!-- QR + WhatsApp (React-like toggle) -->
+      <div class="mb-6 border rounded-xl p-4 bg-gray-50">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <div class="text-lg font-semibold">Scan to Donate</div>
+            <div class="text-sm text-gray-600 mt-1">Toggle one-time vs monthly QR.</div>
+            <div class="mt-3 inline-flex rounded-xl bg-white border p-1">
+              <button id="qrOnceBtn" type="button" class="px-4 py-2 rounded-lg text-sm font-semibold bg-green-600 text-white">One-time</button>
+              <button id="qrMonthlyBtn" type="button" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50">Monthly</button>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <img id="donationQrImg" loading="lazy" class="w-40 h-40 bg-white border rounded-xl p-2" alt="Donation QR">
+            <div class="flex flex-col gap-2">
+              <a id="donateOnceCta" class="px-4 py-2 rounded-xl bg-green-600 text-white font-semibold text-center hover:bg-green-700">Donate Once</a>
+              <a id="monthlySupportCta" class="px-4 py-2 rounded-xl bg-white border font-semibold text-center hover:bg-gray-50">Monthly Support</a>
+              <a id="whatsAppShareBtn" class="px-4 py-2 rounded-xl bg-white border border-green-200 text-green-700 font-semibold text-center hover:bg-green-50" target="_blank" rel="noopener">Share via WhatsApp</a>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -488,6 +789,7 @@
           <p class="text-sm text-gray-600 mt-1">Secure worldwide card donation via Stripe hosted checkout.</p>
           <div class="mt-4 flex flex-col gap-3">
             <a id="stripeDonateLink" class="inline-flex items-center justify-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" href="https://donate.stripe.com/6oU28t1ND16I2V063H7kc04" target="_blank" rel="noopener">Donate with Stripe</a>
+            <a id="stripeMonthlyLink" class="inline-flex items-center justify-center bg-white border border-green-200 text-green-700 px-4 py-2 rounded hover:bg-green-50" href="https://donate.stripe.com/6oU28t1ND16I2V063H7kc04" target="_blank" rel="noopener">Monthly Support (Stripe)</a>
             <div class="text-sm text-gray-600">Scan QR to open the Stripe donate page:</div>
             <div class="flex items-center justify-center">
               <img id="stripeQrImg" alt="Stripe donation QR" class="w-56 h-56 border rounded" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fdonate.stripe.com%2F6oU28t1ND16I2V063H7kc04">
@@ -495,17 +797,6 @@
           </div>
         </div>
       </div>
-      
-      <!-- PayPal Donation Button -->
-      <form action="https://www.paypal.com/donate" method="post" target="_top">
-        <input type="hidden" name="business" value="WRZ8DYSUSX6PU" />
-        <input type="hidden" name="no_recurring" value="0" />
-        <input type="hidden" name="item_name" value="Inspired by the Prophet's (pbuh) teachings, we help people work with dignity and turn charity into self-sufficiency." />
-        <input type="hidden" name="currency_code" value="USD" />
-        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-        <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-      </form>
-      <!-- End PayPal Donation Button -->
       
       <p class="mt-4 text-sm text-gray-600">Alternatively, contact us for other donation methods.</p>
   </section>
@@ -555,6 +846,28 @@
       This Hadith reminds us that work, no matter how simple, brings dignity and reward. SadaqaWorks was created to bring this same opportunity to every hand once stretched out in need.
     </p>
   </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="mt-10 border-t bg-white">
+    <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <div class="font-extrabold text-gray-900">SadaqaWorks</div>
+        <div class="text-sm text-gray-600 mt-2">Empowering through dignified work. Donate once or monthly to support verified causes.</div>
+      </div>
+      <div>
+        <div class="font-semibold text-gray-900">Contact</div>
+        <div class="text-sm text-gray-600 mt-2">Email: <span class="font-mono">zub165@yahoo.com</span></div>
+        <div class="text-sm text-gray-600">Location: Global</div>
+      </div>
+      <div>
+        <div class="font-semibold text-gray-900">Trust</div>
+        <a href="#transparency" class="text-sm text-green-700 hover:text-green-800 block mt-2">Where your money goes</a>
+        <a href="#donate" class="text-sm text-green-700 hover:text-green-800 block mt-1">Donate</a>
+        <div class="text-xs text-gray-500 mt-3">Privacy policy: add a `privacy.html` when ready.</div>
+      </div>
+    </div>
+    <div class="text-xs text-gray-500 text-center py-4 bg-gray-50">© SadaqaWorks</div>
+  </footer>
 
   <!-- Use absolute path so deep links (e.g. /myprojects) still load JS -->
   <script src="/script.js"></script>
