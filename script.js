@@ -869,4 +869,27 @@ document.addEventListener('DOMContentLoaded', () => {
     if (stripeDonateLink) stripeDonateLink.href = STRIPE_DONATE_URL;
     if (stripeQrImg) stripeQrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(STRIPE_DONATE_URL)}`;
     handleDonationReturn();
+
+    // Make top nav tabs reliably scroll to a visible section.
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+            const href = a.getAttribute('href') || '';
+            const id = href.replace('#', '').trim();
+            if (!id) return;
+
+            // Prefer role dashboards when available
+            let target = document.getElementById(id);
+            if (!target && id === 'volunteer') {
+                target = document.getElementById('volunteerDashboard') || document.getElementById('volunteer');
+            }
+            if (!target && id === 'projects') {
+                target = document.getElementById('adminDashboard') || document.getElementById('projects');
+            }
+
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
 }); 
